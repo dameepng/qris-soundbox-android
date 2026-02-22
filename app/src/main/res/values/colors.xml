@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors -->
+    <color name="primary_green">#00C853</color>
+    <color name="primary_green_dark">#009624</color>
+    <color name="primary_green_light">#5EFC82</color>
+
+    <!-- Secondary Colors -->
+    <color name="secondary_blue">#1565C0</color>
+    <color name="secondary_blue_dark">#003C8F</color>
+    <color name="secondary_blue_light">#5E92F3</color>
+
+    <!-- Status Colors -->
+    <color name="success_green">#4CAF50</color>
+    <color name="warning_orange">#FF9800</color>
+    <color name="error_red">#F44336</color>
+    <color name="pending_yellow">#FFC107</color>
+
+    <!-- Neutral Colors -->
+    <color name="background_light">#F5F5F5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="divider_color">#E0E0E0</color>
+
+    <!-- Dark Theme -->
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+</resources>

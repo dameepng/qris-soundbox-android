@@ -1,0 +1,49 @@
+# =========================
+# Android / Gradle
+# =========================
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# =========================
+# Local configuration
+# =========================
+local.properties
+*.local.properties
+
+# =========================
+# Android Studio / IntelliJ
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Optional: device manager config (biasanya tidak perlu di-commit)
+.idea/deviceManager.xml
+
+# =========================
+# Signing / Keystore (JANGAN commit)
+# =========================
+*.jks
+*.keystore
+*.p12
+**/key.properties
+
+# =========================
+# Env / Secrets
+# =========================
+.env
+.env.*
+**/.env
+**/.env.*
+
+# =========================
+# Firebase / Google Services
+# =========================
+google-services.json
+**/google-services.json

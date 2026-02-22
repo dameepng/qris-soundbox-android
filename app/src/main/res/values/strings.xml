@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Soundbox QRIS</string>
+    <string name="app_tagline">Notifikasi pembayaran instan</string>
+
+    <!-- Payment -->
+    <string name="payment_received">Pembayaran Diterima</string>
+    <string name="payment_success">berhasil diterima</string>
+
+    <!-- QRIS -->
+    <string name="qris_title">Buat QR Code</string>
+    <string name="qris_input_hint">Masukkan nominal</string>
+    <string name="qris_generate_btn">Buat QR Code</string>
+    <string name="qris_expired">QR Code Expired</string>
+    <string name="qris_paid">Pembayaran Berhasil</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_tts">Pengumuman Suara</string>
+    <string name="settings_volume">Volume Suara</string>
+
+    <!-- Errors -->
+    <string name="error_network">Tidak ada koneksi internet</string>
+    <string name="error_unknown">Terjadi kesalahan</string>
+    <string name="error_min_amount">Minimal pembayaran Rp 1.000</string>
+    <string name="error_max_amount">Maksimal pembayaran Rp 10.000.000</string>
+</resources>

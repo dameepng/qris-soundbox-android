@@ -1,6 +1,12 @@
 # QRIS Soundbox
 
-QRIS Soundbox is a comprehensive payment notification system that integrates an Android application with a Node.js backend to provide real-time audio and visual alerts for QRIS transactions. It uses Midtrans as the payment gateway and Firebase Cloud Messaging (FCM) for instant notifications.
+QRIS Soundbox is a real-time QRIS payment notification system built with Android (native) and Node.js. It delivers instant audio and visual alerts using Midtrans and Firebase Cloud Messaging (FCM).
+
+This project was built to help small businesses (UMKM) receive real-time QRIS payment notifications through an Android-based soundbox system without expensive hardware solutions.
+
+If you find this project useful, consider buying me a coffee to support ongoing development!
+
+[![Support via Kreate](https://img.shields.io/badge/Support-Kreate-orange?style=for-the-badge)](https://kreate.gg/damenugget)
 
 ## Project Structure
 

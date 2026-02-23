@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -107,6 +108,44 @@ fun QRISGeneratorScreen(
     onNavigateBack: () -> Unit
 ) {
     var amountInput by remember { mutableStateOf("") }
+    var showSuccessDialog by remember { mutableStateOf(false) }
+
+    // Observe state changes to show dialog
+    androidx.compose.runtime.LaunchedEffect(uiState) {
+        if (uiState is QRISUiState.Paid) {
+            showSuccessDialog = true
+        }
+    }
+
+    if (showSuccessDialog) {
+        AlertDialog(
+            onDismissRequest = { showSuccessDialog = false },
+            title = { Text("Pembayaran Selesai", fontWeight = FontWeight.Bold) },
+            text = { Text("Pembayaran Anda telah berhasil diproses.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showSuccessDialog = false
+                        onResetState()
+                        amountInput = ""
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                ) {
+                    Text("Buat QR Baru")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = { showSuccessDialog = false }
+                ) {
+                    Text("Cancel")
+                }
+            },
+            containerColor = SurfaceWhite,
+            titleContentColor = TextPrimary,
+            textContentColor = TextSecondary
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -135,8 +174,8 @@ fun QRISGeneratorScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when (uiState) {
-                // ─── Idle & Input State ───────────────────
-                is QRISUiState.Idle, is QRISUiState.Error -> {
+                // ─── Idle, Error & Paid State ───────────────────
+                is QRISUiState.Idle, is QRISUiState.Error, is QRISUiState.Paid -> {
                     InputSection(
                         amountInput = amountInput,
                         onAmountChange = { amountInput = it },
@@ -188,20 +227,10 @@ fun QRISGeneratorScreen(
                     )
                 }
 
-                // ─── Paid State ───────────────────────────
-                is QRISUiState.Paid -> {
-                    PaidSection(
-                        onNewQR = {
-                            onResetState()
-                            amountInput = ""
-                        },
-                        onBack = onNavigateBack
-                    )
                 }
             }
         }
     }
-}
 
 // ─── Input Section ────────────────────────────────────────────
 
@@ -465,38 +494,6 @@ fun ExpiredSection(onNewQR: () -> Unit) {
             shape = RoundedCornerShape(12.dp)
         ) {
             Text("Buat QR Baru")
-        }
-    }
-}
-
-// ─── Paid Section ─────────────────────────────────────────────
-
-@Composable
-fun PaidSection(onNewQR: () -> Unit, onBack: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(32.dp)
-    ) {
-        Text(text = "✅", fontSize = 64.sp)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Pembayaran Berhasil!",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = SuccessGreen
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            OutlinedButton(onClick = onBack, shape = RoundedCornerShape(12.dp)) {
-                Text("Kembali")
-            }
-            Button(
-                onClick = onNewQR,
-                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text("QR Baru")
-            }
         }
     }
 }

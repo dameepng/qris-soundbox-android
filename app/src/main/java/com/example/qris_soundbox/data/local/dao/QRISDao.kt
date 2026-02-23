@@ -19,7 +19,7 @@ interface QRISDao {
     suspend fun getQRISById(qrisId: String): QRISHistory?
 
     @Query("SELECT * FROM qris_history WHERE order_id = :orderId")
-    suspend fun getQRISByOrderId(orderId: String): QRISHistory?
+    fun getQRISByOrderIdFlow(orderId: String): Flow<QRISHistory?>
 
     @Query("SELECT * FROM qris_history WHERE status = 'pending' AND expires_at > :currentTime")
     fun getActiveQRIS(currentTime: Long): Flow<List<QRISHistory>>

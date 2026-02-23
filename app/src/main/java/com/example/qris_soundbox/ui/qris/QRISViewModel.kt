@@ -12,6 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 // ─── UI State ─────────────────────────────────────────────
@@ -39,12 +40,14 @@ class QRISViewModel(application: Application) : AndroidViewModel(application) {
     val remainingSeconds: StateFlow<Long> = _remainingSeconds.asStateFlow()
 
     private var countdownJob: Job? = null
+    private var paymentObservationJob: Job? = null
 
     // ─── Generate QRIS ─────────────────────────────────────
 
     fun generateQRIS(amount: Int) {
         viewModelScope.launch {
             _uiState.value = QRISUiState.Loading
+            paymentObservationJob?.cancel()
 
             // Validate
             if (amount < Constants.QRIS_MIN_AMOUNT) {
@@ -76,6 +79,7 @@ class QRISViewModel(application: Application) : AndroidViewModel(application) {
             ).onSuccess { qrisData ->
                 _uiState.value = QRISUiState.QRISReady(qrisData)
                 startCountdown(qrisData.expiresAt)
+                observePayment(qrisData.orderId)
 
             }.onFailure { error ->
                 _uiState.value = QRISUiState.Error(
@@ -93,6 +97,7 @@ class QRISViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             countdownJob?.cancel()
+            paymentObservationJob?.cancel()
 
             val apiKey = merchantRepository.getApiKey() ?: return@launch
 
@@ -110,6 +115,7 @@ class QRISViewModel(application: Application) : AndroidViewModel(application) {
 
     fun resetState() {
         countdownJob?.cancel()
+        paymentObservationJob?.cancel()
         _uiState.value = QRISUiState.Idle
         _remainingSeconds.value = 0
     }
@@ -135,8 +141,22 @@ class QRISViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun observePayment(orderId: String) {
+        paymentObservationJob?.cancel()
+        paymentObservationJob = viewModelScope.launch {
+            qrisRepository.observeQRISStatus(orderId).collectLatest { qris ->
+                if (qris?.status == Constants.STATUS_SUCCESS) {
+                    _uiState.value = QRISUiState.Paid
+                    countdownJob?.cancel()
+                    paymentObservationJob?.cancel()
+                }
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         countdownJob?.cancel()
+        paymentObservationJob?.cancel()
     }
 }

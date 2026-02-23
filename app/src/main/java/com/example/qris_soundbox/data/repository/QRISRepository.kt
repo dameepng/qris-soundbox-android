@@ -139,6 +139,10 @@ class QRISRepository(context: Context) {
         return qrisDao.getRecentQRIS()
     }
 
+    fun observeQRISStatus(orderId: String): Flow<QRISHistory?> {
+        return qrisDao.getQRISByOrderIdFlow(orderId)
+    }
+
     fun getActiveQRIS(): Flow<List<QRISHistory>> {
         return qrisDao.getActiveQRIS(System.currentTimeMillis())
     }
